@@ -3,28 +3,59 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+
 }
+
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%) translateY(-100%);
+  }
+  100% {
+    transform: translateX(0) translateY(0)
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(100%) translateY(-100%);
+  }
+}
+
+.animate-menu-open {
+  animation: slideIn 0.5s ease forwards;
+}
+
+.animate-menu-close {
+  animation: slideOut 0.5s ease forwards;
+}
+
+form {
+  background-image: url(../public/images/bg-shorten-mobile.svg);
+  background-repeat: no-repeat;
+  background-position: right top;
+}
+
+.bg_boost {
+  background-image: url(../public/images/bg-boost-mobile.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
 
 @layer utilities {
   .text-balance {
