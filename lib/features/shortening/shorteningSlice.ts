@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '@/lib/store';
 
 export interface ShorteningState {
@@ -13,27 +13,17 @@ export const fetchShortening = createAsyncThunk(
       const response = await fetch('https://cleanuri.com/api/v1/shorten', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
         },
-        body: new URLSearchParams({ url }).toString(),
+        body: JSON.stringify({ url }),
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch');
-      }
-
       const data = await response.json();
-      return data.result_url;
+      return data;
     } catch (error) {
-      throw new Error('Failed to fetch');
+      return { result_url: '', error: 'An error occurred' };
     }
   }
 );
-
-export interface ShorteningState {
-  result_url: string;
-  error: string | null;
-}
 
 const initialState: ShorteningState = {
   result_url: '',
@@ -51,12 +41,8 @@ export const shorteningSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchShortening.fulfilled, (state, action) => {
-      state.result_url = action.payload;
-      state.error = null;
-    });
-    builder.addCase(fetchShortening.rejected, (state, action) => {
-      state.result_url = '';
-      state.error = action.error.message || "Unknown error occurred";
+      state.result_url = action.payload.result_url;
+      state.error = action.payload.error;
     });
   },
 });
