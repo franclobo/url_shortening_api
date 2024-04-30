@@ -21,7 +21,7 @@ export const fetchShortening = createAsyncThunk(
       const data = await response.json();
       return data;
     } catch (error) {
-      return { result_url: '', error: 'An error occurred' };
+      return { result_url: '', error: error };
     }
   }
 );
