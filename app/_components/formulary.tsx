@@ -40,7 +40,6 @@ export const Formulary = () => {
 
   return (
     <form
-      action="post"
       className="flex flex-col bg-purple-950 gap-2 justify-center items-center w-full p-5 my-10 rounded-lg"
       onSubmit={(e) => {
         e.preventDefault();

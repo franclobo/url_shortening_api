@@ -10,27 +10,22 @@ export const fetchShortening = createAsyncThunk(
   'shortening/fetchShortening',
   async (url: string) => {
     try {
-      const response = await fetch('https://cleanuri.com/api/v1/shorten', {
+      const response = await fetch('/api/shortenUrl', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
         },
-        body: new URLSearchParams({ url }).toString(),
+        body: JSON.stringify({ url }),
       });
-      
-      // Manejar errores de red (por ejemplo, cuando falla la solicitud)
+
       if (!response.ok) {
-        throw new Error('Failed to fetch'); // Lanzar un error personalizado
+        throw new Error('Failed to fetch');
       }
-      
+
       const data = await response.json();
       return data;
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        return { result_url: '', error: error.message };
-      } else {
-        return { result_url: '', error: 'Unknown error occurred' };
-      }
+    } catch (error) {
+      return { result_url: '', error: error };
     }
   }
 );
