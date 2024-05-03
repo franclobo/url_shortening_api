@@ -38,7 +38,7 @@ Users should be able to:
 ### Links
 
 - Solution URL: [url-shortening](https://github.com/franclobo/url_shortening_api)
-- Live Site URL: [url-shortening](https://url-shortening-k9l87f9hp-franclobos-projects.vercel.app/)
+- Live Site URL: [url-shortening](https://url-shortening-api-three-ochre.vercel.app/)
 
 ## My process
 
