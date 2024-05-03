@@ -33,7 +33,7 @@ Users should be able to:
 
 ### Screenshot
 
-![](./screenshot.jpg)
+![image](https://github.com/franclobo/url_shortening_api/assets/58642949/243dff1f-0052-4167-b281-6c1b3ac0372c)
 
 ### Links
 
