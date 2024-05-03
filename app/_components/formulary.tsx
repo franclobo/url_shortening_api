@@ -9,6 +9,9 @@ export const Formulary = ({ setShortenedUrls }: { setShortenedUrls: React.Dispat
   const resultUrl = useAppSelector(selectResultUrl);
   const error = useAppSelector(selectError);
   const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState('');
+  const [submitted, setSubmitted] = useState(false); // Estado para controlar si se ha enviado el formulario
+  const [showError, setShowError] = useState(false); // Estado para controlar si se muestra el mensaje de error
 
   useEffect(() => {
     if (resultUrl) {
@@ -24,36 +27,44 @@ export const Formulary = ({ setShortenedUrls }: { setShortenedUrls: React.Dispat
   }, [resultUrl, dispatch, setShortenedUrls]);
 
   useEffect(() => {
-    if (error) {
+    if (error && submitted) { // Mostrar error solo si se ha enviado el formulario
       console.error('An error occurred:', error);
       dispatch(resetShortening());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, submitted]);
 
   const handleSubmit = async () => {
-    if (!inputRef.current || !inputRef.current.value.trim()) return;
+    if (!value.trim()) {
+      setShowError(true); // Mostrar mensaje de error si el campo está vacío al enviar el formulario
+      return;
+    }
 
-    const url = inputRef.current.value.trim();
-    console.log('URL entered:', url);
+    console.log('URL entered:', value);
 
     setLoading(true);
-    await dispatch(fetchShortening(url));
+    await dispatch(fetchShortening(value));
     setLoading(false);
 
-    inputRef.current.value = '';
+    setValue('');
+    setSubmitted(true); // Marcar el formulario como enviado
+    setShowError(false); // Ocultar el mensaje de error
   };
 
   const handleShorten = async () => {
-    if (!inputRef.current || !inputRef.current.value.trim()) return;
+    if (!value.trim()) {
+      setShowError(true); // Mostrar mensaje de error si el campo está vacío al hacer clic en el botón "Shorten It"
+      return;
+    }
 
-    const url = inputRef.current.value.trim();
-    console.log('URL entered:', url);
+    console.log('URL entered:', value);
 
     setLoading(true);
-    await dispatch(fetchShortening(url));
+    await dispatch(fetchShortening(value));
     setLoading(false);
 
-    inputRef.current.value = '';
+    setValue('');
+    setSubmitted(true); // Marcar el formulario como enviado
+    setShowError(false); // Ocultar el mensaje de error
   };
 
   return (
@@ -65,12 +76,17 @@ export const Formulary = ({ setShortenedUrls }: { setShortenedUrls: React.Dispat
           handleSubmit();
         }}
       >
-        <input
-          type="text"
-          className="p-2 rounded-lg w-full md:col-span-8"
-          placeholder="Shorten a link here..."
-          ref={inputRef}
-        />
+        <div className='md:col-span-8 text-left'>
+          <input
+            type="text"
+            className={`p-2 rounded-lg w-full ${showError && value === '' ? 'border-2 border-red-500' : ''}`}
+            placeholder="Shorten a link here..."
+            ref={inputRef}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+          {showError && value === '' && <p className="text-red-500 text-sm italic">Please add a link</p>}
+        </div>
         <button
           type="submit"
           className="text-white font-bold bg-cyan-500 w-full py-2 rounded-xl hover:bg-cyan-300 md:col-span-4"
